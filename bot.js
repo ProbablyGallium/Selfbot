@@ -15,6 +15,8 @@ self.on('ready', () => {
 });
 
 self.on('message', message => {
+  const args = message.content.slice(prefix.length).trim().split(/ +/g);
+  const command = args.shift().toLowerCase();
 if (message.author.tag != self.user.tag){return;}
 
   if (message.content === (prefix + 'ping')) {
@@ -30,7 +32,7 @@ if (message.author.tag != self.user.tag){return;}
         })
     }
 }
-if (message.content.startsWith(prefix + "eval")) {
+if (command === 'eval') {
   const args = message.content.split(" ").slice(1);
 try {
 const code = args.join(" ");
@@ -62,7 +64,7 @@ message.channel.send(new Discord.RichEmbed().addField("Input", "```xl\n " + code
   message.channel.send(new Discord.RichEmbed().addField("`ERROR`","\`\`\`xl\n" + clean(err) + "\n\`\`\`").setColor(color))
 }
 }
-if (message.content.startsWith(prefix + "remove")) {
+if (command === "remove") {
   if (message.channel.type !== "group") {
     message.channel.send("⚠ This command only works in group DMs.")
   }
@@ -72,19 +74,19 @@ if (message.content.startsWith(prefix + "remove")) {
     });
   }
 }
-if (message.content.startsWith(prefix + "groupedit")) {
+if (command === "groupname") {
+  let newName = args.join(" ");  
   if (message.channel.type !== "group") {
     message.channel.send("⚠ This command only works in group DMs.")
   }
-  else if (message.content.substring(prefix.length + 9, prefix.length + 14) == "name") {
-    message.channel.setName(message.content.substring(prefix.length + 15))
-    //this is broken, pls no us
+  else {
+    message.channel.setName(newName)
   }
 }
-if (message.content.startsWith(prefix + "emote")) {
-  let emote = message.content.substring(prefix.length + "6", message.content.length - 1)
-  message.channel.send(new Discord.RichEmbed().setTitle("Info about emote " + self.emojis.find("name", emote.name)))
-  //this is broken, pls no use
+if (command === "emote" || command === "emoji") {
+  let emote = args[0].split(":")
+  let emoteID = emote[2].slice(0, -1)
+  message.channel.send(new Discord.RichEmbed().setTitle("Info About Emote **" + self.emojis.get(emoteID).name + "**:").addField("Server",self.emojis.get(emoteID).guild).addField("ID","`" + emote.join(":") + "`").setColor(color).setThumbnail(self.emojis.get(emoteID).url))
 }
 
 });
