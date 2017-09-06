@@ -84,9 +84,18 @@ if (command === "groupname") {
   }
 }
 if (command === "emote" || command === "emoji") {
+  if (message.channel.type === "text"){
+    var color = message.guild.me.displayColor
+   }
+     else {
+       var color = 0xFF0000
+     }
   let emote = args[0].split(":")
   let emoteID = emote[2].slice(0, -1)
-  message.channel.send(new Discord.RichEmbed().setTitle("Info About Emote **" + self.emojis.get(emoteID).name + "**:").addField("Server",self.emojis.get(emoteID).guild).addField("ID","`" + emote.join(":") + "`").setColor(color).setThumbnail(self.emojis.get(emoteID).url))
+  message.channel.send(new Discord.RichEmbed().setTitle("Info About Emote **" + self.emojis.get(emoteID).name + "**:").addField("Server",self.emojis.get(emoteID).guild).addField("ID","`" + emote.join(":") + "`").setColor(color).setThumbnail(self.emojis.get(emoteID).url)).catch((err) => {
+    console.log("ERROR: Insufficient Permissions\n Client does not have permission Embed Links.")
+    message.channel.send("⚠ Something went wrong. Check your console.")
+  })
 }
 
 });
