@@ -19,19 +19,27 @@ self.on('message', message => {
   const command = args.shift().toLowerCase();
 if (message.author.tag != self.user.tag){return;}
 
+if (message.channel.type === "text"){
+  var color = message.guild.me.displayColor
+ }
+   else {
+     var color = 0xFF0000
+   }
+
+  if (message.content === (prefix + 'help')) {
+    message.channel.send(new Discord.RichEmbed().setTitle("Selfbot Help").addField("Commands", "`" + prefix + "help`: Display this text.\n`" + prefix + "ping`: Check your ~~pong~~ connection to the servers.\n`" + prefix + "about`: Display some info about the selfbot.\n`" + prefix + "eval`: Evaluate JavaScript code.\n`" + prefix + "remove @user`: Remove a user from a Group DM, only works if you own the group DM.\n`" + prefix + "groupname <new name>`: Set the name of a Group DM.\n`" + prefix + "emote/" + prefix + "emoji :emoji:`: Get info on any custom emoji. **DISCLAIMER: The bot will crash if you try to use this command with a unicode emote like :warning:, please emote responsibly.**").setColor(color))
+  }
   if (message.content === (prefix + 'ping')) {
     message.delete()
     message.channel.send('Pong! ' + Math.round(self.ping) + "ms");
   }
   if (message.content === (prefix + 'about')) {
-    if (message.guild.me.permissions.has("EMBED_LINKS")) {
         message.delete()
-        message.channel.send(new Discord.RichEmbed().setTitle("Gallium's Discord Selfbot").addField("Features:","-Group DM Commands, great for mobile users.\n-Configurability: Choose your prefix! Don't want to use embeds? Turn 'em off! (coming soon)").setColor(message.guild.me.displayColor)).catch((err) => {
+        message.channel.send(new Discord.RichEmbed().setTitle("Gallium's Discord Selfbot").addField("Features:","-Group DM Commands, great for mobile users.\n-Configurability: Choose your prefix!\n-[Open Source!](https://github.com/benzarr410/Selfbot)").setColor(color)).catch((err) => {
           console.log("ERROR: Insufficient Permissions\n Client does not have permission Embed Links.")
           message.channel.send("⚠ Something went wrong. Check your console.")
         })
-    }
-}
+      }
 if (command === 'eval') {
   const args = message.content.split(" ").slice(1);
 try {
@@ -46,14 +54,7 @@ hastebin(evalOut, "js").then(r => {
 message.channel.send("Output larger than 2000 characters, posted to " + r + " ."); //https://hastebin.com/someurl.js
 }).catch(console.error);
 }
-else {
-  if (message.channel.type === "text"){
-   var color = message.guild.me.displayColor
-  }
-    else {
-      var color = 0xFF0000
-    }
-  
+else {  
   message.delete()
 message.channel.send(new Discord.RichEmbed().addField("Input", "```xl\n " + code + "\n```").addField("Output","```xl\n" + evalOut + "\n```").setColor(color)).catch((err) => {
   console.log("ERROR: Insufficient Permissions\n Client does not have permission Embed Links.")
@@ -84,12 +85,6 @@ if (command === "groupname") {
   }
 }
 if (command === "emote" || command === "emoji") {
-  if (message.channel.type === "text"){
-    var color = message.guild.me.displayColor
-   }
-     else {
-       var color = 0xFF0000
-     }
   let emote = args[0].split(":")
   let emoteID = emote[2].slice(0, -1)
   message.channel.send(new Discord.RichEmbed().setTitle("Info About Emote **" + self.emojis.get(emoteID).name + "**:").addField("Server",self.emojis.get(emoteID).guild).addField("ID","`" + emote.join(":") + "`").setColor(color).setThumbnail(self.emojis.get(emoteID).url)).catch((err) => {
