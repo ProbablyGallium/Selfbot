@@ -84,6 +84,19 @@ if (command === "groupname") {
     message.channel.setName(newName)
   }
 }
+if (command === "groupicon") { 
+  if (message.channel.type !== "group") {
+    message.channel.send("⚠ This command only works in group DMs.")    
+  }
+  else {
+    if (message.attachments.size >= 1) {
+    message.channel.setIcon(message.attachments.first().url)
+    }
+    else {
+      message.channel.send("⚠ You need to send an image to set the icon to.")      
+    }
+  }
+}
 if (command === "emote" || command === "emoji") {
   let emote = args[0].split(":")
   let emoteID = emote[2].slice(0, -1)
@@ -92,7 +105,17 @@ if (command === "emote" || command === "emoji") {
     message.channel.send("⚠ Something went wrong. Check your console.")
   })
 }
-
+if (command === "w" || command === "dm") {
+  args.shift()
+  let msg = args.join(" ")
+  if (message.mentions.size = 0) {
+    message.channel.send("⚠ You have to mention someone to send a DM to!")
+  }
+  else {
+  message.mentions.users.first().send(msg)
+  message.channel.send("Sent!")
+  }
+}
 });
 
 self.login(config.token)
