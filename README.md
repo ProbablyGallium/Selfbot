@@ -15,7 +15,9 @@ Well, make sure you have [Git](https://git-scm.com/) and [Node.js](https://nodej
     cd Selfbot/
     npm i --save discord.js hastebin-gen
 
-This will download the bot and install the dependencies that need it to be run. To start the bot, just run the command:
+This will download the bot and install the dependencies that need it to be run. To start the bot, run run.bat if you are on Windows.
+
+If you are on Mac or Linux run:
 
     node bot
 
