@@ -2,6 +2,8 @@ const Discord = require('discord.js');
 const self = new Discord.Client();
 const config = require('./config.json');
 const prefix = config.prefix
+const emojiUnicode = require("emoji-unicode")
+
 function clean(text) {
   if (typeof(text) === "string")
     return text.replace(/`/g, "`" + String.fromCharCode(8203)).replace(/@/g, "@" + String.fromCharCode(8203));
@@ -23,7 +25,7 @@ if (message.channel.type === "text"){
   var color = message.guild.me.displayColor
  }
    else {
-     var color = 0xFF0000
+     var color = "0x" + config.embedFallbackColor.toUpperCase();
    }
 
   if (message.content === (prefix + 'help')) {
@@ -98,24 +100,28 @@ if (command === "groupicon") {
   }
 }
 if (command === "emote" || command === "emoji") {
+  if (args[0].includes(":")) {
   let emote = args[0].split(":")
   let emoteID = emote[2].slice(0, -1)
-  message.channel.send(new Discord.RichEmbed().setTitle("Info About Emote **" + self.emojis.get(emoteID).name + "**:").addField("Server",self.emojis.get(emoteID).guild).addField("ID","`" + emote.join(":") + "`").setColor(color).setThumbnail(self.emojis.get(emoteID).url)).catch((err) => {
+  message.channel.send(new Discord.RichEmbed().setTitle("Info About Emote :" + self.emojis.get(emoteID).name + ":").addField("Server",self.emojis.get(emoteID).guild).addField("ID","`" + emote.join(":") + "`").addField("Created by",self.emojis.get(emoteID).client.user).setColor(color).setThumbnail(self.emojis.get(emoteID).url)).catch((err) => {
     console.log("ERROR: Insufficient Permissions\n Client does not have permission Embed Links.")
     message.channel.send("⚠ Something went wrong. Check your console.")
   })
 }
+else {
+  let emote = args[0]
+  console.log(emote)
+  message.channel.send(new Discord.RichEmbed().setTitle("Info About Emoji :" + emote.name + ":").addField("Codepoint","U+" + emojiUnicode(emote).toUpperCase()))
+}
+}
 if (command === "w" || command === "dm") {
   args.shift()
   let msg = args.join(" ")
-  if (message.mentions.size = 0) {
-    message.channel.send("⚠ You have to mention someone to send a DM to!")
-  }
-  else {
   message.mentions.users.first().send(msg)
   message.channel.send("Sent!")
-  }
 }
+else {return}
+
 });
 
 self.login(config.token)

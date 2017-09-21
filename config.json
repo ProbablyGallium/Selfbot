@@ -1,5 +1,7 @@
 {
 	"token":"",
-	"prefix":"",
-	"timezone":""
+	"prefix":"!!",
+	"timezone":"",
+	"embedFallbackColor":"32CD32",
+	"_comment^":"Note about embedFallbackColor, Don't include the # in your hex code"
 }

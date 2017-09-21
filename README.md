@@ -13,7 +13,7 @@ Well, make sure you have [Git](https://git-scm.com/) and [Node.js](https://nodej
 
     git clone https://github.com/benzarr410/Selfbot
     cd Selfbot/
-    npm i --save discord.js hastebin-gen
+    npm i --save discord.js hastebin-gen emoji-unicode
 
 This will download the bot and install the dependencies that need it to be run. To start the bot, just run the command:
 
