@@ -20,3 +20,7 @@ This will download the bot and install the dependencies that need it to be run. 
     node bot
 
 in your Selfbot folder.
+
+# And what about updating?
+
+Yeah, sometimes I push updates and stuff. If you wanna be on the bleeding edge of development, before you run `node bot`, run `git pull`, this will update you to the current code on github, but if there's an update to `config.json`, it might overwrite your data, so be wary.
